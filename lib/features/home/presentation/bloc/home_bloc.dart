@@ -262,7 +262,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       await _ensureTrackedDayExists(dateTime);
       final trackedDay = await _getTrackedDayUsecase.getTrackedDay(dateTime);
       final currentSteps = trackedDay?.stepsTracked ?? 0;
-      final newSteps = (currentSteps + event.steps).clamp(0, 999999);
+      final newSteps = (currentSteps + event.steps).clamp(0, 999999).toInt();
       await _addTrackedDayUseCase.setDayStepsTracked(dateTime, newSteps);
       add(const LoadItemsEvent());
     });
@@ -279,7 +279,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         'walking',
         'Morning walk, moderate pace',
         3.5,
-        [],
+        <String>[],
         PhysicalActivityTypeEntity.running,
       );
 
