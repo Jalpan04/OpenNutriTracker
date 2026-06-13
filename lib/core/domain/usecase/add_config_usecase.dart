@@ -106,6 +106,25 @@ class AddConfigUsecase {
   }
 
   Future<void> setConfigAccentColor(int? value) async {
-    await _configRepository.setConfigAccentColor(value);
+     await _configRepository.setConfigAccentColor(value);
+   }
+
+  Future<void> setConfigManualTargetsEnabled(bool enabled) async {
+    await _configRepository.setConfigManualTargetsEnabled(enabled);
+  }
+
+  Future<void> setConfigManualTargets({
+    required double kcal,
+    required double protein,
+    required double carbs,
+    required double fat,
+  }) async {
+    await _configRepository.setConfigManualTargets(
+      kcal: kcal,
+      protein: protein,
+      carbs: carbs,
+      fat: fat,
+    );
   }
 }
+

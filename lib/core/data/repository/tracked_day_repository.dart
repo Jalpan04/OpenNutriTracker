@@ -203,4 +203,16 @@ class TrackedDayRepository {
     await _trackedDayDataSource.reconcileCaloriesAndMacrosTracked(
         day, calories, carbs, fat, protein);
   }
+
+  Future<void> addDayStepsTracked(DateTime day, int steps) async {
+    if (await _trackedDayDataSource.hasTrackedDay(day)) {
+      await _trackedDayDataSource.addDayStepsTracked(day, steps);
+    }
+  }
+
+  Future<void> setDayStepsTracked(DateTime day, int steps) async {
+    if (await _trackedDayDataSource.hasTrackedDay(day)) {
+      await _trackedDayDataSource.setDayStepsTracked(day, steps);
+    }
+  }
 }

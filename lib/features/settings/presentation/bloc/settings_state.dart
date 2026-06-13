@@ -33,6 +33,11 @@ class SettingsLoadedState extends SettingsState {
   final int dayStartOffsetMinutes; // #139 follow-up
   final bool useMaterialYou; // #415
   final int? accentColor; // #415 follow-up
+  final bool useManualTargets;
+  final double? manualKcalTarget;
+  final double? manualProteinG;
+  final double? manualCarbsG;
+  final double? manualFatG;
 
   const SettingsLoadedState(
     this.versionNumber,
@@ -53,6 +58,11 @@ class SettingsLoadedState extends SettingsState {
     this.dayStartOffsetMinutes = 0,
     this.useMaterialYou = true,
     this.accentColor,
+    this.useManualTargets = false,
+    this.manualKcalTarget,
+    this.manualProteinG,
+    this.manualCarbsG,
+    this.manualFatG,
   });
 
   @override
@@ -75,5 +85,11 @@ class SettingsLoadedState extends SettingsState {
         dayStartOffsetMinutes,
         useMaterialYou,
         accentColor,
+        useManualTargets,
+        manualKcalTarget,
+        manualProteinG,
+        manualCarbsG,
+        manualFatG,
       ];
 }
+

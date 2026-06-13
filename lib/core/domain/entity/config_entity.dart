@@ -68,6 +68,11 @@ class ConfigEntity extends Equatable {
   // Material You when set. Null means "use the platform default" — Material
   // You on Android 12+, the static palette elsewhere.
   final int? accentColor;
+  final bool useManualTargets;
+  final double? manualKcalTarget;
+  final double? manualProteinG;
+  final double? manualCarbsG;
+  final double? manualFatG;
 
   /// Default daily water goal in millilitres for the home chip when the
   /// user has not picked one yet.
@@ -135,7 +140,13 @@ class ConfigEntity extends Equatable {
     this.fastingWarningAcknowledged = false,
     this.useMaterialYou = true,
     this.accentColor,
+    this.useManualTargets = false,
+    this.manualKcalTarget,
+    this.manualProteinG,
+    this.manualCarbsG,
+    this.manualFatG,
   });
+
 
   /// Resolves the daily water goal for the home chip. Returns the user's
   /// stored override if one exists, otherwise the gendered seed default
@@ -217,6 +228,11 @@ class ConfigEntity extends Equatable {
     fastingWarningAcknowledged: dbo.fastingWarningAcknowledged ?? false,
     useMaterialYou: dbo.useMaterialYou ?? true,
     accentColor: _normaliseAccentColor(dbo.accentColor),
+    useManualTargets: dbo.useManualTargets ?? false,
+    manualKcalTarget: dbo.manualKcalTarget,
+    manualProteinG: dbo.manualProteinG,
+    manualCarbsG: dbo.manualCarbsG,
+    manualFatG: dbo.manualFatG,
   );
 
   /// Returns the recommended kcal target for [mealKey] given a daily goal.
@@ -295,5 +311,11 @@ class ConfigEntity extends Equatable {
     fastingWarningAcknowledged,
     useMaterialYou,
     accentColor,
+    useManualTargets,
+    manualKcalTarget,
+    manualProteinG,
+    manualCarbsG,
+    manualFatG,
   ];
 }
+

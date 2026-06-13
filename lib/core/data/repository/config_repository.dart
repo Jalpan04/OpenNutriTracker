@@ -150,4 +150,23 @@ class ConfigRepository {
   Future<void> setConfigAccentColor(int? value) async {
     await _configDataSource.setConfigAccentColor(value);
   }
+
+  Future<void> setConfigManualTargetsEnabled(bool enabled) async {
+    await _configDataSource.setConfigManualTargetsEnabled(enabled);
+  }
+
+  Future<void> setConfigManualTargets({
+    required double kcal,
+    required double protein,
+    required double carbs,
+    required double fat,
+  }) async {
+    await _configDataSource.setConfigManualTargets(
+      kcal: kcal,
+      protein: protein,
+      carbs: carbs,
+      fat: fat,
+    );
+  }
 }
+

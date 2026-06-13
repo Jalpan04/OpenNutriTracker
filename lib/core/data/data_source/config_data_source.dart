@@ -254,6 +254,29 @@ class ConfigDataSource {
     await config?.save();
   }
 
+  Future<void> setConfigManualTargetsEnabled(bool enabled) async {
+    _log.fine('Updating config useManualTargets to $enabled');
+    final config = _configBox.get(_configKey);
+    config?.useManualTargets = enabled;
+    await config?.save();
+  }
+
+  Future<void> setConfigManualTargets({
+    required double kcal,
+    required double protein,
+    required double carbs,
+    required double fat,
+  }) async {
+    _log.fine('Updating config manual targets: kcal=$kcal, pro=$protein, carb=$carbs, fat=$fat');
+    final config = _configBox.get(_configKey);
+    config?.manualKcalTarget = kcal;
+    config?.manualProteinG = protein;
+    config?.manualCarbsG = carbs;
+    config?.manualFatG = fat;
+    await config?.save();
+  }
+
+
   Future<ConfigDBO> getConfig() async {
     return _configBox.get(_configKey) ?? ConfigDBO.empty();
   }

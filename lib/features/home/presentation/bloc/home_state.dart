@@ -57,6 +57,7 @@ class HomeLoadedState extends HomeState {
   final int waterMlToday;
   final int waterGoalMl;
   final List<WaterIntakeEntity> waterIntakes;
+  final int stepsTracked;
 
   const HomeLoadedState({
     required this.showDisclaimerDialog,
@@ -90,6 +91,7 @@ class HomeLoadedState extends HomeState {
     required this.waterMlToday,
     required this.waterGoalMl,
     required this.waterIntakes,
+    required this.stepsTracked,
     this.showActivityTracking = true,
     this.showMealMacros = true,
   });
@@ -107,5 +109,6 @@ class HomeLoadedState extends HomeState {
     waterGoalMl,
     waterIntakes,
     showActivityTracking,
+    stepsTracked,
   ];
 }

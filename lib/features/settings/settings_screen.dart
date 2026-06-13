@@ -31,6 +31,8 @@ import 'package:opennutritracker/features/settings/presentation/widgets/kcal_adj
 import 'package:opennutritracker/features/settings/presentation/widgets/macro_split_dialog.dart';
 import 'package:opennutritracker/features/settings/presentation/widgets/nutrient_goals_screen.dart';
 import 'package:opennutritracker/features/settings/presentation/widgets/per_meal_kcal_share_dialog.dart';
+import 'package:opennutritracker/features/settings/presentation/widgets/manual_targets_dialog.dart';
+
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -112,6 +114,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     onTap: () => _showKcalAdjustmentDialog(context),
                   ),
                 ),
+                Semantics(
+                  identifier: 'settings-manual-targets',
+                  child: ListTile(
+                    leading: const Icon(Icons.tune_outlined),
+                    title: const Text('Manual / Fixed Targets'),
+                    onTap: () => _showManualTargetsDialog(context),
+                  ),
+                ),
+
                 Semantics(
                   identifier: 'settings-macro-split',
                   child: ListTile(
@@ -557,6 +568,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
+  void _showManualTargetsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => ManualTargetsDialog(
+        settingsBloc: _settingsBloc,
+        homeBloc: _homeBloc,
+      ),
+    );
+  }
+
 
   void _showMacroSplitDialog(BuildContext context) {
     showDialog(

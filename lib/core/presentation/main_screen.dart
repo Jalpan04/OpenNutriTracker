@@ -8,6 +8,7 @@ import 'package:opennutritracker/core/presentation/widgets/home_appbar.dart';
 import 'package:opennutritracker/features/home/home_page.dart';
 import 'package:opennutritracker/core/presentation/widgets/main_appbar.dart';
 import 'package:opennutritracker/features/profile/profile_page.dart';
+import 'package:opennutritracker/features/meal_plan/presentation/meal_plan_page.dart';
 import 'package:opennutritracker/core/domain/entity/intake_type_entity.dart';
 import 'package:opennutritracker/features/add_meal/domain/entity/meal_entity.dart';
 import 'package:opennutritracker/features/edit_meal/presentation/edit_meal_screen.dart';
@@ -36,6 +37,7 @@ class _MainScreenState extends State<MainScreen> {
       const DiaryPage(),
       const RecipesPage(),
       const ProfilePage(),
+      const MealPlanPage(),
     ];
     _appbarPages = [
       const HomeAppbar(),
@@ -93,6 +95,10 @@ class _MainScreenState extends State<MainScreen> {
       MainAppbar(
         title: S.of(context).profileLabel,
         iconData: Icons.account_circle,
+      ),
+      const MainAppbar(
+        title: "Meal Plan",
+        iconData: Icons.restaurant,
       ),
     ];
     super.didChangeDependencies();
@@ -152,6 +158,15 @@ class _MainScreenState extends State<MainScreen> {
                   : const Icon(Icons.account_circle_outlined),
             ),
             label: S.of(context).profileLabel,
+          ),
+          NavigationDestination(
+            icon: Semantics(
+              identifier: 'nav-meal-plan',
+              child: _selectedPageIndex == 4
+                  ? const Icon(Icons.restaurant)
+                  : const Icon(Icons.restaurant_outlined),
+            ),
+            label: "Meal Plan",
           ),
         ],
       ),

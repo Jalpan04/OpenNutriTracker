@@ -8,6 +8,9 @@ class GetMacroGoalUsecase {
 
   Future<double> getCarbsGoal(double totalCalorieGoal) async {
     final config = await _configRepository.getConfig();
+    if (config.useManualTargets && config.manualCarbsG != null) {
+      return config.manualCarbsG!;
+    }
     final userCarbGoal = config.userCarbGoalPct;
 
     return MacroCalc.getTotalCarbsGoal(
@@ -18,6 +21,9 @@ class GetMacroGoalUsecase {
 
   Future<double> getFatsGoal(double totalCalorieGoal) async {
     final config = await _configRepository.getConfig();
+    if (config.useManualTargets && config.manualFatG != null) {
+      return config.manualFatG!;
+    }
     final userFatGoal = config.userFatGoalPct;
 
     return MacroCalc.getTotalFatsGoal(
@@ -28,6 +34,9 @@ class GetMacroGoalUsecase {
 
   Future<double> getProteinsGoal(double totalCalorieGoal) async {
     final config = await _configRepository.getConfig();
+    if (config.useManualTargets && config.manualProteinG != null) {
+      return config.manualProteinG!;
+    }
     final userProteinGoal = config.userProteinGoalPct;
 
     return MacroCalc.getTotalProteinsGoal(
@@ -36,3 +45,4 @@ class GetMacroGoalUsecase {
     );
   }
 }
+

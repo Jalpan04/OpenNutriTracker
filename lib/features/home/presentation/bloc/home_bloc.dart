@@ -22,9 +22,14 @@ import 'package:opennutritracker/core/domain/usecase/get_user_activity_usecase.d
 import 'package:opennutritracker/core/domain/usecase/get_user_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/update_intake_usecase.dart';
 import 'package:opennutritracker/core/domain/usecase/update_user_activity_usecase.dart';
+import 'package:opennutritracker/core/domain/usecase/get_tracked_day_usecase.dart';
+import 'package:opennutritracker/core/domain/usecase/add_user_activity_usercase.dart';
+import 'package:opennutritracker/core/domain/entity/physical_activity_entity.dart';
+import 'package:opennutritracker/core/utils/id_generator.dart';
 import 'package:opennutritracker/core/utils/calc/calorie_goal_calc.dart';
 import 'package:opennutritracker/core/utils/calc/day_boundary_calc.dart';
 import 'package:opennutritracker/core/utils/calc/macro_calc.dart';
+import 'package:opennutritracker/core/utils/calc/met_calc.dart';
 import 'package:opennutritracker/core/utils/locator.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/calendar_day_bloc.dart';
 import 'package:opennutritracker/features/diary/presentation/bloc/diary_bloc.dart';
@@ -49,6 +54,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetWaterIntakeUsecase _getWaterIntakeUsecase;
   final AddWaterIntakeUsecase _addWaterIntakeUsecase;
   final DeleteWaterIntakeUsecase _deleteWaterIntakeUsecase;
+  final GetTrackedDayUsecase _getTrackedDayUsecase;
+  final AddUserActivityUsecase _addUserActivityUsecase;
 
   DateTime currentDay = DateTime.now();
 
@@ -68,6 +75,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this._getWaterIntakeUsecase,
     this._addWaterIntakeUsecase,
     this._deleteWaterIntakeUsecase,
+    this._getTrackedDayUsecase,
+    this._addUserActivityUsecase,
   ) : super(HomeInitial()) {
     on<LoadItemsEvent>((event, emit) async {
       emit(HomeLoadingState());
@@ -198,6 +207,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         totalKcalGoal,
       );
 
+      final trackedDay = await _getTrackedDayUsecase.getTrackedDay(currentDay);
+      final stepsTracked = trackedDay?.stepsTracked ?? 0;
+
       emit(
         HomeLoadedState(
           showDisclaimerDialog: showDisclaimerDialog,
@@ -240,9 +252,90 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             caloriesProfile: user.caloriesProfile,
           ),
           waterIntakes: waterIntakes,
+          stepsTracked: stepsTracked,
         ),
       );
     });
+
+    on<UpdateStepsEvent>((event, emit) async {
+      final dateTime = await _currentLogicalDay();
+      await _ensureTrackedDayExists(dateTime);
+      final trackedDay = await _getTrackedDayUsecase.getTrackedDay(dateTime);
+      final currentSteps = trackedDay?.stepsTracked ?? 0;
+      final newSteps = (currentSteps + event.steps).clamp(0, 999999);
+      await _addTrackedDayUseCase.setDayStepsTracked(dateTime, newSteps);
+      add(const LoadItemsEvent());
+    });
+
+    on<LogMorningWalkEvent>((event, emit) async {
+      final dateTime = await _currentLogicalDay();
+      await _ensureTrackedDayExists(dateTime);
+
+      final user = await _getUserUsecase.getUserData();
+      final id = IdGenerator.getUniqueID();
+
+      const morningWalkActivity = PhysicalActivityEntity(
+        '17160',
+        'walking',
+        'Morning walk, moderate pace',
+        3.5,
+        [],
+        PhysicalActivityTypeEntity.running,
+      );
+
+      final burnedKcal = METCalc.getTotalBurnedKcal(user, morningWalkActivity, 60.0);
+
+      final userActivity = UserActivityEntity(
+        id,
+        60.0,
+        burnedKcal,
+        DateTime.now(),
+        morningWalkActivity,
+      );
+
+      await _addUserActivityUsecase.addUserActivity(userActivity);
+
+      final config = await _getConfigUsecase.getConfig();
+      if (!config.useManualTargets) {
+        await _addTrackedDayUseCase.increaseDayCalorieGoal(dateTime, burnedKcal);
+        final carbsIncrease = MacroCalc.getTotalCarbsGoal(burnedKcal);
+        final fatIncrease = MacroCalc.getTotalFatsGoal(burnedKcal);
+        final proteinIncrease = MacroCalc.getTotalProteinsGoal(burnedKcal);
+        await _addTrackedDayUseCase.increaseDayMacroGoals(
+          dateTime,
+          carbsAmount: carbsIncrease,
+          fatAmount: fatIncrease,
+          proteinAmount: proteinIncrease,
+        );
+      }
+
+      await _addTrackedDayUseCase.addDayStepsTracked(dateTime, 8000);
+
+      await _updateDiaryPage(dateTime);
+      add(const LoadItemsEvent());
+    });
+  }
+
+  Future<void> _ensureTrackedDayExists(DateTime day) async {
+    final hasDay = await _getTrackedDayUsecase.getTrackedDay(day) != null;
+    if (!hasDay) {
+      final configData = await _getConfigUsecase.getConfig();
+      final user = await _getUserUsecase.getUserData();
+      final totalKcalGoal = await _getKcalGoalUsecase.getKcalGoal(
+        userEntity: user,
+      );
+      final totalCarbsGoal = await _getMacroGoalUsecase.getCarbsGoal(totalKcalGoal);
+      final totalFatGoal = await _getMacroGoalUsecase.getFatsGoal(totalKcalGoal);
+      final totalProteinGoal = await _getMacroGoalUsecase.getProteinsGoal(totalKcalGoal);
+
+      await _addTrackedDayUseCase.addNewTrackedDay(
+        day,
+        totalKcalGoal,
+        totalCarbsGoal,
+        totalFatGoal,
+        totalProteinGoal,
+      );
+    }
   }
 
   double getTotalKcal(List<IntakeEntity> intakeList) =>

@@ -160,4 +160,12 @@ class AddTrackedDayUsecase {
       double calories, double carbs, double fat, double protein) async {
     await _trackedDayRepository.reconcileDayTracked(day, calories, carbs, fat, protein);
   }
+
+  Future<void> addDayStepsTracked(DateTime day, int steps) async {
+    await _trackedDayRepository.addDayStepsTracked(day, steps);
+  }
+
+  Future<void> setDayStepsTracked(DateTime day, int steps) async {
+    await _trackedDayRepository.setDayStepsTracked(day, steps);
+  }
 }

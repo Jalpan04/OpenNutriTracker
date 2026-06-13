@@ -291,4 +291,22 @@ class TrackedDayDataSource {
       await updateDay.save();
     }
   }
+
+  Future<void> addDayStepsTracked(DateTime day, int steps) async {
+    log.fine('Adding tracked day steps');
+    final updateDay = await getTrackedDay(day);
+    if (updateDay != null) {
+      updateDay.stepsTracked = (updateDay.stepsTracked ?? 0) + steps;
+      await updateDay.save();
+    }
+  }
+
+  Future<void> setDayStepsTracked(DateTime day, int steps) async {
+    log.fine('Setting tracked day steps');
+    final updateDay = await getTrackedDay(day);
+    if (updateDay != null) {
+      updateDay.stepsTracked = steps;
+      await updateDay.save();
+    }
+  }
 }

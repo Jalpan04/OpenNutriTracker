@@ -157,6 +157,8 @@ Future<void> initLocator() async {
       locator(),
       locator(),
       locator(),
+      locator(), // GetTrackedDayUsecase
+      locator(), // AddUserActivityUsecase
     ),
   );
   locator.registerLazySingleton(() => DiaryBloc(locator(), locator()));

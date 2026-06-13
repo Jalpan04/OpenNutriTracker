@@ -23,6 +23,7 @@ import 'package:opennutritracker/features/home/presentation/widgets/fasting_home
 import 'package:opennutritracker/features/home/presentation/widgets/quick_water_widget.dart';
 import 'package:opennutritracker/features/home/presentation/widgets/quick_weight_widget.dart';
 import 'package:opennutritracker/generated/l10n.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,6 +39,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   bool _isIntakeDragging = false;
   bool _isActivityDragging = false;
   bool get _isDragging => _isIntakeDragging || _isActivityDragging;
+  bool _sleepChecked = false;
 
   @override
   void initState() {
@@ -97,6 +99,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             state.snackSharePct,
             state.waterMlToday,
             state.waterGoalMl,
+            state.stepsTracked,
           );
         } else {
           return _getLoadingContent();
@@ -152,6 +155,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     int snackSharePct,
     int waterMlToday,
     int waterGoalMl,
+    int stepsTracked,
   ) {
     if (showDisclaimerDialog) {
       _showDisclaimerDialog(context);
@@ -201,6 +205,190 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   caloriesProfile: userCaloriesProfile,
                 ),
               ),
+            
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Card(
+                elevation: 1,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Step Tracker',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          Icon(Icons.directions_walk_outlined, color: Theme.of(context).colorScheme.primary),
+                        ],
+                      ),
+                      const SizedBox(height: 16.0),
+                      Row(
+                        children: [
+                          CircularPercentIndicator(
+                            radius: 40.0,
+                            lineWidth: 8.0,
+                            percent: (stepsTracked / 8000).clamp(0.0, 1.0),
+                            center: Text(
+                              '${((stepsTracked / 8000) * 100).toInt()}%',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            progressColor: Theme.of(context).colorScheme.primary,
+                            backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
+                            circularStrokeCap: CircularStrokeCap.round,
+                            animation: true,
+                            animateFromLastPercent: true,
+                          ),
+                          const SizedBox(width: 16.0),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '$stepsTracked / 8000 steps',
+                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                                const SizedBox(height: 4.0),
+                                Text(
+                                  stepsTracked >= 8000
+                                      ? 'Daily goal achieved!'
+                                      : '${8000 - stepsTracked} steps remaining',
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                        color: stepsTracked >= 8000
+                                            ? Colors.green
+                                            : Theme.of(context).hintColor,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Semantics(
+                                identifier: 'home-steps-decrement',
+                                child: IconButton(
+                                  icon: const Icon(Icons.remove_circle_outline),
+                                  color: Theme.of(context).colorScheme.primary,
+                                  onPressed: () {
+                                    _homeBloc.add(const UpdateStepsEvent(-1000));
+                                  },
+                                ),
+                              ),
+                              Text(
+                                '1k steps',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Semantics(
+                                identifier: 'home-steps-increment',
+                                child: IconButton(
+                                  icon: const Icon(Icons.add_circle_outline),
+                                  color: Theme.of(context).colorScheme.primary,
+                                  onPressed: () {
+                                    _homeBloc.add(const UpdateStepsEvent(1000));
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          Semantics(
+                            identifier: 'home-log-morning-walk',
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                _homeBloc.add(const LogMorningWalkEvent());
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Logged morning walk activity and +8000 steps'),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.directions_walk, size: 16),
+                              label: const Text('Morning Walk'),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Card(
+                elevation: 1,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Sleep & Walk Schedule',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          Icon(Icons.check_circle_outline, color: Theme.of(context).colorScheme.secondary),
+                        ],
+                      ),
+                      const SizedBox(height: 12.0),
+                      CheckboxListTile(
+                        value: _sleepChecked,
+                        onChanged: (val) {
+                          setState(() {
+                            _sleepChecked = val ?? false;
+                          });
+                        },
+                        title: const Text('Sleep Schedule'),
+                        subtitle: const Text('11:00 PM - 6:00 AM (7 hours)'),
+                        secondary: const Icon(Icons.bedtime_outlined, color: Colors.indigo),
+                        activeColor: Theme.of(context).colorScheme.primary,
+                        contentPadding: EdgeInsets.zero,
+                        controlType: ListTileControlType.leading,
+                      ),
+                      CheckboxListTile(
+                        value: stepsTracked >= 8000,
+                        onChanged: null,
+                        title: const Text('Morning Walk'),
+                        subtitle: const Text('60 mins walk / 8000 steps target'),
+                        secondary: const Icon(Icons.wb_sunny_outlined, color: Colors.orange),
+                        activeColor: Theme.of(context).colorScheme.primary,
+                        contentPadding: EdgeInsets.zero,
+                        controlType: ListTileControlType.leading,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
             if (showActivityTracking)
               ActivityVerticalList(
                 day: DateTime.now(),

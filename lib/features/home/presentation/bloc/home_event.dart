@@ -10,3 +10,15 @@ abstract class HomeEvent extends Equatable {
 class LoadItemsEvent extends HomeEvent {
   const LoadItemsEvent();
 }
+
+class UpdateStepsEvent extends HomeEvent {
+  final int steps;
+  const UpdateStepsEvent(this.steps);
+
+  @override
+  List<Object?> get props => [steps];
+}
+
+class LogMorningWalkEvent extends HomeEvent {
+  const LogMorningWalkEvent();
+}

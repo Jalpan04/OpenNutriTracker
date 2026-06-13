@@ -69,6 +69,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           dayStartOffsetMinutes: userConfig.dayStartOffsetMinutes,
           useMaterialYou: userConfig.useMaterialYou,
           accentColor: userConfig.accentColor,
+          useManualTargets: userConfig.useManualTargets,
+          manualKcalTarget: userConfig.manualKcalTarget,
+          manualProteinG: userConfig.manualProteinG,
+          manualCarbsG: userConfig.manualCarbsG,
+          manualFatG: userConfig.manualFatG,
         ),
       );
     });
@@ -127,6 +132,24 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   void setAccentColor(int? value) {
     _addConfigUsecase.setConfigAccentColor(value);
+  }
+
+  void setManualTargetsEnabled(bool enabled) {
+    _addConfigUsecase.setConfigManualTargetsEnabled(enabled);
+  }
+
+  void setManualTargets({
+    required double kcal,
+    required double protein,
+    required double carbs,
+    required double fat,
+  }) {
+    _addConfigUsecase.setConfigManualTargets(
+      kcal: kcal,
+      protein: protein,
+      carbs: carbs,
+      fat: fat,
+    );
   }
 
   Future<Map<String, int>?> getDiarySortPreferences() async {
@@ -278,5 +301,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     }
   }
 }
+
 
 enum SystemDropDownType { metric, imperial }

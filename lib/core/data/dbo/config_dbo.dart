@@ -94,6 +94,16 @@ class ConfigDBO extends HiveObject {
   // the static palette elsewhere.
   @HiveField(26)
   int? accentColor;
+  @HiveField(27)
+  bool? useManualTargets;
+  @HiveField(28)
+  double? manualKcalTarget;
+  @HiveField(29)
+  double? manualProteinG;
+  @HiveField(30)
+  double? manualCarbsG;
+  @HiveField(31)
+  double? manualFatG;
 
   ConfigDBO(
     this.hasAcceptedDisclaimer,
@@ -120,6 +130,11 @@ class ConfigDBO extends HiveObject {
     this.fastingWarningAcknowledged,
     this.useMaterialYou,
     this.accentColor,
+    this.useManualTargets = false,
+    this.manualKcalTarget,
+    this.manualProteinG,
+    this.manualCarbsG,
+    this.manualFatG,
   });
 
   factory ConfigDBO.empty() =>
@@ -131,6 +146,29 @@ class ConfigDBO extends HiveObject {
     entity.hasAcceptedSendAnonymousData,
     AppThemeDBO.fromAppThemeEntity(entity.appTheme),
     usesImperialUnits: entity.usesImperialUnits,
+    userKcalAdjustment: entity.userKcalAdjustment,
+    showActivityTracking: entity.showActivityTracking,
+    showMealMacros: entity.showMealMacros,
+    notificationsEnabled: entity.notificationsEnabled,
+    notificationHour: entity.notificationHour,
+    notificationMinute: entity.notificationMinute,
+    selectedLocale: entity.selectedLocale,
+    showMicronutrients: entity.showMicronutrients,
+    usesKilojoules: entity.usesKilojoules,
+    mealKcalSharesPct: entity.mealKcalSharesPct,
+    diarySortPreferences: entity.diarySortPreferences,
+    nutrientPanelVisibility: entity.nutrientPanelVisibility,
+    dayStartOffsetHours: entity.dayStartOffsetHours,
+    dayStartOffsetMinutes: entity.dayStartOffsetMinutes,
+    dailyWaterGoalMl: entity.dailyWaterGoalMl,
+    fastingWarningAcknowledged: entity.fastingWarningAcknowledged,
+    useMaterialYou: entity.useMaterialYou,
+    accentColor: entity.accentColor,
+    useManualTargets: entity.useManualTargets,
+    manualKcalTarget: entity.manualKcalTarget,
+    manualProteinG: entity.manualProteinG,
+    manualCarbsG: entity.manualCarbsG,
+    manualFatG: entity.manualFatG,
   );
 
   factory ConfigDBO.fromJson(Map<String, dynamic> json) =>
@@ -138,3 +176,5 @@ class ConfigDBO extends HiveObject {
 
   Map<String, dynamic> toJson() => _$ConfigDBOToJson(this);
 }
+
+

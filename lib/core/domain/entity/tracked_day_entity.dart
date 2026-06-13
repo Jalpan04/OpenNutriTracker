@@ -38,6 +38,7 @@ class TrackedDayEntity extends Equatable {
   final double? vitaminDGoal;
   final double? vitaminB12Goal;
   final double? magnesiumGoal;
+  final int stepsTracked;
 
   const TrackedDayEntity({
     required this.day,
@@ -59,6 +60,7 @@ class TrackedDayEntity extends Equatable {
     this.vitaminDGoal,
     this.vitaminB12Goal,
     this.magnesiumGoal,
+    this.stepsTracked = 0,
   });
 
   factory TrackedDayEntity.fromTrackedDayDBO(TrackedDayDBO trackedDayDBO) {
@@ -82,6 +84,7 @@ class TrackedDayEntity extends Equatable {
       vitaminDGoal: trackedDayDBO.vitaminDGoal,
       vitaminB12Goal: trackedDayDBO.vitaminB12Goal,
       magnesiumGoal: trackedDayDBO.magnesiumGoal,
+      stepsTracked: trackedDayDBO.stepsTracked ?? 0,
     );
   }
 
@@ -141,5 +144,6 @@ class TrackedDayEntity extends Equatable {
         vitaminDGoal,
         vitaminB12Goal,
         magnesiumGoal,
+        stepsTracked,
       ];
 }

@@ -63,6 +63,8 @@ class TrackedDayDBO extends HiveObject {
   double? vitaminB12Goal;
   @HiveField(18)
   double? magnesiumGoal;
+  @HiveField(19)
+  int? stepsTracked;
 
   TrackedDayDBO({
     required this.day,
@@ -84,6 +86,7 @@ class TrackedDayDBO extends HiveObject {
     this.vitaminDGoal,
     this.vitaminB12Goal,
     this.magnesiumGoal,
+    this.stepsTracked = 0,
   });
 
   factory TrackedDayDBO.fromTrackedDayEntity(TrackedDayEntity entity) {
@@ -107,8 +110,10 @@ class TrackedDayDBO extends HiveObject {
       vitaminDGoal: entity.vitaminDGoal,
       vitaminB12Goal: entity.vitaminB12Goal,
       magnesiumGoal: entity.magnesiumGoal,
+      stepsTracked: entity.stepsTracked,
     );
   }
+
 
   factory TrackedDayDBO.fromJson(Map<String, dynamic> json) =>
       _$TrackedDayDBOFromJson(json);
