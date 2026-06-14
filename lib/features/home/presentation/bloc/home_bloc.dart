@@ -319,7 +319,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _ensureTrackedDayExists(DateTime day) async {
     final hasDay = await _getTrackedDayUsecase.getTrackedDay(day) != null;
     if (!hasDay) {
-      final configData = await _getConfigUsecase.getConfig();
       final user = await _getUserUsecase.getUserData();
       final totalKcalGoal = await _getKcalGoalUsecase.getKcalGoal(
         userEntity: user,

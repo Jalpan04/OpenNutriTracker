@@ -371,7 +371,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         secondary: const Icon(Icons.bedtime_outlined, color: Colors.indigo),
                         activeColor: Theme.of(context).colorScheme.primary,
                         contentPadding: EdgeInsets.zero,
-                        controlType: ListTileControlType.leading,
+                        controlAffinity: ListTileControlAffinity.leading,
                       ),
                       CheckboxListTile(
                         value: stepsTracked >= 8000,
@@ -381,7 +381,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         secondary: const Icon(Icons.wb_sunny_outlined, color: Colors.orange),
                         activeColor: Theme.of(context).colorScheme.primary,
                         contentPadding: EdgeInsets.zero,
-                        controlType: ListTileControlType.leading,
+                        controlAffinity: ListTileControlAffinity.leading,
                       ),
                     ],
                   ),
