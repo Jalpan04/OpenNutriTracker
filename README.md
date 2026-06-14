@@ -22,6 +22,26 @@ OpenNutriTracker is an open-source mobile application designed to simplify nutri
 
 [Website](https://simonoppowa.github.io/OpenNutriTracker/)
 
+## Customization Fork Features
+This repository is a customized fork of OpenNutriTracker created by [@Jalpan04](https://github.com/Jalpan04). It adds several personal tracking features, UI enhancements, and optimized build configurations.
+
+### Key Customizations Added
+* **Manual Targets:** Supports custom daily macronutrient and calorie goals (Calories, Carbohydrates, Protein, Fat) via a manual dialog UI, bypassing default formula-driven calculators.
+* **Step Tracker:** Integrates a daily step counter widget on the home view for monitoring physical activity targets.
+* **Sleep Checklist:** Daily checklist interface on the home screen to track sleep patterns.
+* **Meal Plan Rotation:** Custom rotation module for repeating and organizing daily meal schedules.
+* **Android-Only Build Pipeline:** Streamlined GitHub Actions workflow to focus exclusively on Android APK and AAB packaging, disabling heavy iOS configurations and bypassing memory-intensive Jetifier steps to prevent heap space errors.
+
+### Personal Targets Configuration
+The app is configured to track the following daily metrics based on a vegetarian diet, morning walking routine, and aggressive weight-loss plan:
+* **Calories Goal:** 1500 kcal
+* **Protein Target:** 120 g
+* **Carbohydrates Target:** 150 g
+* **Fat Target:** 45 g
+* **Daily Steps Goal:** 8000 steps (60 minutes morning walk)
+* **Sleep Target:** 7 hours (11:00 PM to 6:00 AM)
+* **Water Intake Goal:** 3 to 3.5 L
+
 ## Screenshots
 <p align="center">
   <img alt="Logo" src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.png" width="20%" />
