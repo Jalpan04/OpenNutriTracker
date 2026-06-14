@@ -820,11 +820,11 @@ class _MealPlanPageState extends State<MealPlanPage> {
         // Day Summary Card
         Card(
           elevation: 0,
-          color: theme.colorScheme.secondaryContainer.withOpacity(0.3),
+          color: theme.colorScheme.secondaryContainer.withValues(alpha: 0.3),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: BorderSide(
-              color: theme.colorScheme.outlineVariant.withOpacity(0.4),
+              color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
             ),
           ),
           child: Padding(
@@ -909,7 +909,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
               side: BorderSide(
-                color: theme.colorScheme.outlineVariant.withOpacity(0.4),
+                color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
               ),
             ),
             child: Padding(
@@ -928,7 +928,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
                         decoration: BoxDecoration(
                           color: isLunch
                               ? theme.colorScheme.tertiaryContainer
-                              : theme.colorScheme.surfaceVariant,
+                              : theme.colorScheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -1073,7 +1073,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                   side: BorderSide(
-                    color: theme.colorScheme.outlineVariant.withOpacity(0.4),
+                    color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
                   ),
                 ),
                 child: Padding(
@@ -1118,7 +1118,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                   side: BorderSide(
-                    color: theme.colorScheme.outlineVariant.withOpacity(0.4),
+                    color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
                   ),
                 ),
                 child: Padding(
@@ -1143,7 +1143,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
                             children: [
                               CircleAvatar(
                                 radius: 10,
-                                backgroundColor: theme.colorScheme.surfaceVariant,
+                                backgroundColor: theme.colorScheme.surfaceContainerHighest,
                                 child: Text(
                                   index.toString(),
                                   style: theme.textTheme.labelSmall?.copyWith(
@@ -1172,10 +1172,10 @@ class _MealPlanPageState extends State<MealPlanPage> {
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withOpacity(0.2),
+                  color: theme.colorScheme.primaryContainer.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+                    color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
                   ),
                 ),
                 child: Row(
@@ -1209,11 +1209,11 @@ class _MealPlanPageState extends State<MealPlanPage> {
     final theme = Theme.of(context);
     return Card(
       elevation: 0,
-      color: theme.colorScheme.primaryContainer.withOpacity(0.3),
+      color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: theme.colorScheme.primaryContainer.withOpacity(0.6),
+          color: theme.colorScheme.primaryContainer.withValues(alpha: 0.6),
         ),
       ),
       child: Padding(
@@ -1235,7 +1235,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
                   Text(
                     "Add Whey Protein Shake: +25g Protein, 120 kcal",
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onPrimaryContainer.withOpacity(0.8),
+                      color: theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
                     ),
                   ),
                 ],
@@ -1281,7 +1281,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
@@ -1299,7 +1299,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
