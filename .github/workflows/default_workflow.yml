@@ -385,6 +385,13 @@ jobs:
         # should validate.
         run: flutter build apk --flavor full --debug
 
+      - name: Upload Android Debug APK artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-debug-apk
+          path: build/app/outputs/flutter-apk/app-full-debug.apk
+          if-no-files-found: error
+
   android-integration-tests:
     # Same as iOS: runs in parallel from the start, gated on neither
     # android-build (it rebuilds the app itself) nor a file-discovery job.
