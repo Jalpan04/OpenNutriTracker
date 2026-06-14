@@ -393,9 +393,8 @@ jobs:
 
   android-deploy:
     if: |
-      ((github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-      github.event_name == 'workflow_dispatch') &&
-      secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON != ''
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      github.event_name == 'workflow_dispatch'
     needs:
       - android-package
     runs-on: ubuntu-latest
@@ -421,10 +420,15 @@ jobs:
 
       - name: Upload Android App Bundle to Google Play Internal Testing via Fastlane
         working-directory: android
-        run: bundle exec fastlane android internal
         env:
           GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           ANDROID_AAB_PATH: ${{ github.workspace }}/release-assets/android/app-release.aab
+        run: |
+          if [ -z "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON" ]; then
+            echo "GOOGLE_PLAY_SERVICE_ACCOUNT_JSON is missing. Skipping deployment to Google Play."
+            exit 0
+          fi
+          bundle exec fastlane android internal
 
   github-release:
     if: |
